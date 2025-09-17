@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 import uvicorn
-app = FastAPI()
+app = FastAPI(title="RCA API", version="1.0.0", description="API for Rajshahi City Association")
 
 @app.get("/")
 async def index():
