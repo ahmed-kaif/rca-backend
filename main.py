@@ -6,5 +6,9 @@ app = FastAPI(title="RCA API", version="1.0.0", description="API for Rajshahi Ci
 async def index():
     return {"msg": "Welcome to RCA Backend"}
 
+@app.get("/login")
+async def login():
+    return {"msg": "Login Route Implementation"}
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
