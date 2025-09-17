@@ -10,5 +10,9 @@ async def index():
 async def check_api_health():
     return {"status": "ok"}
 
+@app.get("/login")
+async def login():
+    return {"msg": "Login Route Implementation"}
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
