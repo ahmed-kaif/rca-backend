@@ -17,5 +17,9 @@ async def check_api_health():
 async def login(db: Session = Depends(get_db())):
     return {"msg": "Login Route Implementation"}
 
+@app.get("/register")
+async def register(db: Session = Depends(get_db())):
+    return {"msg": "Register Route Implementation"}
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
