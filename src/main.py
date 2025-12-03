@@ -1,25 +1,13 @@
-from fastapi import FastAPI, Depends
-from sqlalchemy.orm import Session
-import uvicorn
-from db import get_db
+from fastapi import FastAPI
+from src.api.v1.api import api_router
+from src.core.config import settings
 
-app = FastAPI(title="RCA API", version="1.0.0", description="API for Rajshahi City Association")
+app = FastAPI(title="Alumni Association API")
+
+# Include the router
+app.include_router(api_router, prefix="/api/v1")
+
 
 @app.get("/")
-async def index():
-    return {"msg": "Welcome to RCA Backend"}
-
-@app.get("/healthz")
-async def check_api_health():
-    return {"status": "ok"}
-
-@app.get("/login")
-async def login(db: Session = Depends(get_db())):
-    return {"msg": "Login Route Implementation"}
-
-@app.get("/register")
-async def register(db: Session = Depends(get_db())):
-    return {"msg": "Register Route Implementation"}
-
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+def root():
+    return {"message": "Welcome to the Alumni Association API"}
