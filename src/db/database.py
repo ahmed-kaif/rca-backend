@@ -1,12 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
+from src.core.config import settings
 
-# Database configuration
-DATABASE_URL = "sqlite:///./test.db"
 
 # Create SQLAlchemy engine
 engine = create_engine(
-    DATABASE_URL, connect_args={"check_same_thread": False}
+    settings.DATABASE_URL, connect_args={"check_same_thread": False}
 )
 
 # Create session factory
