@@ -13,7 +13,11 @@ from src.schemas.user import (
 router = APIRouter()
 
 
-@router.post("/", response_model=UserResponse)
+@router.post(
+    "/",
+    response_model=UserResponse,
+    dependencies=[Depends(deps.get_current_active_superuser)],
+)
 def create_user(
     *,
     session: deps.SessionDep,

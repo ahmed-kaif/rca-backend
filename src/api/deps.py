@@ -7,7 +7,8 @@ from sqlalchemy.orm import Session
 
 from src.db.database import SessionLocal
 from src.core.config import settings
-from src.models.user import User, UserRole
+from src.models.user import User
+from src.models.enums import UserRole
 from src.schemas.auth import TokenData
 
 # Defines where the token comes from (the /login endpoint)

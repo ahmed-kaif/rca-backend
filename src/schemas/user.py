@@ -1,6 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel, EmailStr
-from src.models.user import UserRole, BloodGroup
+from src.models.enums import UserRole, BloodGroup
 
 
 # --- Profile Schemas ---
@@ -72,3 +72,27 @@ class UserResponse(UserBase):
 
     class Config:
         from_attributes = True
+
+
+class RegisterBase(BaseModel):
+    email: EmailStr
+    password: str
+    full_name: str
+    phone_number: str | None = None
+    blood_group: BloodGroup | None = None
+
+
+class StudentRegister(RegisterBase):
+    # Students must provide these
+    university_id: str
+    department: str
+    series: str  # e.g. "2021"
+
+
+class AlumniRegister(RegisterBase):
+    # Alumni might provide these
+    series: str
+    is_employed: bool = False
+    current_company: str | None = None
+    designation: str | None = None
+    linkedin_profile: str | None = None
