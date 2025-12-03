@@ -65,6 +65,10 @@ def register_student(
         is_active=True,
     )
 
+    session.add(db_user)
+    session.commit()
+    session.refresh(db_user)
+
     # 3. Create Profile with Student Data
     db_profile = Profile(
         user_id=db_user.id,
@@ -75,10 +79,6 @@ def register_student(
         department=user_in.department,
         series=user_in.series,
     )
-
-    session.add(db_user)
-    session.commit()
-    session.refresh(db_user)
 
     session.add(db_profile)
     session.commit()

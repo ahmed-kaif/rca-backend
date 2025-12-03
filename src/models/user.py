@@ -70,4 +70,11 @@ class Profile(Base):
     work_location = Column(String, nullable=True)  # City/Country of work
     linkedin_profile = Column(String, nullable=True)
 
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(
+        DateTime,
+        default=datetime.now(timezone.utc),
+        onupdate=datetime.now(timezone.utc),
+    )
+
     user = relationship("User", back_populates="profile")

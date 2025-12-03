@@ -66,8 +66,8 @@ class UserPasswordUpdate(BaseModel):
 
 class UserResponse(UserBase):
     id: int
-    created_at: datetime
-    updated_at: datetime
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
     profile: ProfileResponse | None = None
 
     class Config:
