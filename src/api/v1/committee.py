@@ -38,18 +38,17 @@ def create_committee_session(
     *,
     session: deps.SessionDep,
     committee_in: CommitteeSessionCreate,
-    current_user: deps.CurrentUser,  # Protected: Logged in users only
+    current_user: deps.CurrentUser,
 ) -> Any:
     """
     Create a new committee year (e.g. "2024-25").
     Only Admins should arguably do this, but keeping it simple for now.
     """
-    # If admin check is needed: deps.get_current_active_superuser
-
-    # If setting to active, deactivate others
+    # If setting to active, deactivate others first
     if committee_in.is_active:
-        session.query(CommitteeSession).update({CommitteeSession.is_active: False})
-        session.commit()
+        session.query(CommitteeSession).update(
+            {CommitteeSession.is_active: False}, synchronize_session=False
+        )
 
     db_obj = CommitteeSession(**committee_in.model_dump())
     session.add(db_obj)

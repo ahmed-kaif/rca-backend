@@ -44,10 +44,17 @@ def create_user(
     session.commit()
     session.refresh(db_user)
 
-    # Create Empty Profile for the user automatically
-    db_profile = Profile(user_id=db_user.id, full_name=user_in.email.split("@")[0])
+    # Create Empty Profile for the user automatically with required fields
+    db_profile = Profile(
+        user_id=db_user.id,
+        full_name=user_in.email.split("@")[0],
+        university_id="",  # Will be updated by user later
+        department="",  # Will be updated by user later
+        series="",  # Will be updated by user later
+    )
     session.add(db_profile)
     session.commit()
+    session.refresh(db_profile)
 
     return db_user
 
@@ -72,12 +79,22 @@ def update_user_profile(
     """
     Update own profile.
     """
-    profile = current_user.profile
-    if not profile:
-        # Should not happen if we create profile on register, but safety check
-        profile = Profile(user_id=current_user.id)
-        session.add(profile)
+    # Query profile directly from database to avoid stale data
+    profile = session.query(Profile).filter(Profile.user_id == current_user.id).first()
 
+    if not profile:
+        # Create profile if it doesn't exist (safety check)
+        profile = Profile(
+            user_id=current_user.id,
+            full_name=current_user.email.split("@")[0],
+            university_id="",
+            department="",
+            series="",
+        )
+        session.add(profile)
+        session.flush()
+
+    # Update profile fields
     profile_data = profile_in.model_dump(exclude_unset=True)
     for field, value in profile_data.items():
         setattr(profile, field, value)

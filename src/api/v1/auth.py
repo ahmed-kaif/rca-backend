@@ -82,6 +82,7 @@ def register_student(
 
     session.add(db_profile)
     session.commit()
+    session.refresh(db_profile)
 
     return db_user
 
@@ -117,13 +118,17 @@ def register_alumni(
         full_name=user_in.full_name,
         phone_number=user_in.phone_number,
         blood_group=user_in.blood_group,
+        university_id="",  # Alumni may not have current university ID
+        department=user_in.department or "",  # Optional for alumni
         series=user_in.series,  # Batch
         is_employed=user_in.is_employed,
         current_company=user_in.current_company,
         designation=user_in.designation,
+        work_location=user_in.work_location,
         linkedin_profile=user_in.linkedin_profile,
     )
     session.add(db_profile)
     session.commit()
+    session.refresh(db_profile)
 
     return db_user

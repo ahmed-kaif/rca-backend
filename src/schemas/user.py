@@ -92,7 +92,9 @@ class StudentRegister(RegisterBase):
 class AlumniRegister(RegisterBase):
     # Alumni might provide these
     series: str
+    department: str | None = None
     is_employed: bool = False
     current_company: str | None = None
     designation: str | None = None
+    work_location: str | None = None
     linkedin_profile: str | None = None
