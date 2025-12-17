@@ -1,0 +1,6 @@
+full_name,series,email,password,phone_number,blood_group,department,university_id,is_employed,current_company,designation,work_location,linkedin_profile
+John Doe,2020,john.doe@example.com,password123,+8801712345678,A+,CSE,2020123456,true,Tech Corp,Software Engineer,Dhaka,https://linkedin.com/in/johndoe
+Jane Smith,2019,,,+8801812345678,B+,EEE,2019123456,true,Digital Solutions,Senior Developer,Chittagong,https://linkedin.com/in/janesmith
+Ahmed Khan,2021,,,+8801912345678,O+,CE,2021123456,false,,,Rajshahi,
+Fatima Rahman,2018,,,,A-,CSE,,true,Global Tech,Team Lead,Dhaka,
+Mohammad Ali,2022,,,,,ME,2022987654,false,,,,

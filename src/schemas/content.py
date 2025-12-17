@@ -35,6 +35,7 @@ class NoticeBase(BaseModel):
     title: str
     content: str
     is_published: bool = True
+    is_pinned: bool = False
 
 
 class NoticeCreate(NoticeBase):

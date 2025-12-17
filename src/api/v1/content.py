@@ -1,8 +1,9 @@
 from typing import Any, List
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException
 
 from src.api import deps
 from src.models.content import Event, Notice
+from src.models.enums import UserRole
 from src.schemas.content import EventCreate, EventResponse, NoticeCreate, NoticeResponse
 
 router = APIRouter()
@@ -27,7 +28,11 @@ def read_events(
     )
 
 
-@router.post("/events", response_model=EventResponse)
+@router.post(
+    "/events",
+    response_model=EventResponse,
+    dependencies=[Depends(deps.get_current_active_superuser)],
+)
 def create_event(
     *,
     session: deps.SessionDep,
@@ -42,6 +47,17 @@ def create_event(
     session.commit()
     session.refresh(db_obj)
     return db_obj
+
+
+@router.get("/events/{event_id}", response_model=EventResponse)
+def read_event(
+    event_id: int,
+    session: deps.SessionDep,
+) -> Any:
+    """
+    Get event by ID.
+    """
+    return session.query(Event).filter(Event.id == event_id).first()
 
 
 # --- Notices ---
@@ -75,6 +91,30 @@ def create_notice(
     Create a notice.
     """
     db_obj = Notice(**notice_in.model_dump(), author_id=current_user.id)
+    session.add(db_obj)
+    session.commit()
+    session.refresh(db_obj)
+    return db_obj
+
+
+@router.put("/notices/{notice_id}", response_model=NoticeResponse)
+def update_notice(
+    *,
+    session: deps.SessionDep,
+    notice_id: int,
+    notice_in: NoticeCreate,
+    current_user: deps.CurrentUser,
+) -> Any:
+    """
+    Update a notice.
+    """
+    db_obj = session.query(Notice).filter(Notice.id == notice_id).first()
+    if current_user.id != db_obj.author_id or current_user.role != UserRole.ADMIN:
+        raise HTTPException(
+            status_code=403, detail="Not authorized to update this notice."
+        )
+    for field, value in notice_in.model_dump().items():
+        setattr(db_obj, field, value)
     session.add(db_obj)
     session.commit()
     session.refresh(db_obj)

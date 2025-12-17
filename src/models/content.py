@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from operator import is_
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Text, Boolean
 from src.db.database import Base
 
@@ -37,6 +38,7 @@ class Notice(Base):
     title = Column(String, nullable=False)
     content = Column(Text, nullable=False)
     is_published = Column(Boolean, default=True)
+    is_pinned = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.now(timezone.utc))
     updated_at = Column(
         DateTime,
